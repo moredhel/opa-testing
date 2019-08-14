@@ -38,8 +38,11 @@ review_latest = {
   }
 }
 
-# Here I am trying to execute the violation and verify that it is working as expected
-test_sample {
-  # not violation[testInput] with input.review as review_latest with input.parameters as parameters
-  violation[testInput] with input.review as review_tagged with input.parameters as parameters
+test_review_latest {
+  violation[out] with input.review as review_latest with input.parameters as parameters
+  re_match("has banned image tag", out.msg)
+}
+
+test_review_tagged {
+  count(violation) == 0 with input.review as review_tagged with input.parameters as parameters
 }
